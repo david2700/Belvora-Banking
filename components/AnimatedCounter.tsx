@@ -11,6 +11,7 @@ const AnimatedCounter = ({amount}: {amount: number}) => {
             end={amount}
             prefix="£"
             decimal="."
+            decimals={2}
         />
     </div>
   )
