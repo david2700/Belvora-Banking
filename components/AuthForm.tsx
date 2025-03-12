@@ -9,22 +9,16 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 
 import { Button } from "@/components/ui/button"
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+import { Form } from "@/components/ui/form"
 import CustomInput from "./CustomInput"
 import { AuthFormSchema } from '@/lib/utils';
-import { Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react'; 
+import { useRouter } from 'next/navigation';
+import { signUp, signIn } from '@/lib/actions/user.actions';
 
 
 const  AuthForm = ({type}: {type: string}) => {
+    const router = useRouter();
     const [user, setUser] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
 
@@ -39,19 +33,29 @@ const  AuthForm = ({type}: {type: string}) => {
       })
      
       // 2. Define a submit handler.
-      const  onSubmit = async (values: z.infer<typeof formSchema>) => {
+      const  onSubmit = async (data: z.infer<typeof formSchema>) => {
         setIsLoading(true)
         try {
+            //sign up with Appwrite and create plaid token
+            
             if (type === "sign-up") {
+                const newUser = await signUp(data);
 
+                setUser(newUser);
             } 
             if (type === "sign-in") {
+                const response = await signIn({
+                    email: data.email,
+                    password: data.password
+                })
 
+                if(response) {
+                    router.push("/");
+                }
             }
         } catch (error) {
             console.log(error)
         }
-        console.log(values)
         setIsLoading(false);
       }
 
@@ -98,21 +102,21 @@ const  AuthForm = ({type}: {type: string}) => {
                         {
                             type === "sign-up" && (
                                 <>
-                                    <div className="flex gap-4">
+                                    <div className="flex justify-around gap-4">
                                         <CustomInput control={form.control} name="firstName" placeholder="John" label="First Name"/>
                                         <CustomInput control={form.control} name="lastName" placeholder="Doe" label="Last Name"/>
                                     </div>
                                     <CustomInput control={form.control} name="address1" placeholder="Enter your specific address" label="Address"/>
-                                    <div className="flex gap-4">
-                                        <CustomInput control={form.control} name="city" placeholder="e.g: London" label="City"/>
+                                    <CustomInput control={form.control} name="city" placeholder="e.g: London" label="City"/>
+                                    <div className="flex justify-around gap-4">
+                                        <CustomInput control={form.control} name="country" placeholder="e.g: Scotland" label="Country"/>
                                         <CustomInput control={form.control} name="postCode" placeholder="e.g: W1A 1AA" label="Post Code"/>
                                     </div>
-                                    <div className="flex gap-4">
+                                    <div className="flex justify-around gap-4">
                                         <CustomInput control={form.control} name="dateOfBirth" placeholder="DD-MM-YYYY" label="Date of Birth"/>
                                         <CustomInput control={form.control} name="phoneNumber" placeholder="Enter your phone number" label="Phone Number"/>
                                     </div>
                                 </>
-                                
                             )
                         }
                         <CustomInput control={form.control} name="email" placeholder="Enter your email" label="Email"/>

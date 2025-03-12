@@ -4,17 +4,17 @@ import React from 'react'
 import {
     Sheet,
     SheetContent,
-    SheetDescription,
-    SheetHeader,
-    SheetTitle,
     SheetTrigger,
     SheetClose,
+    SheetTitle,
   } from "@/components/ui/sheet"
 import Image from 'next/image'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import { sidebarLinks } from '@/constants/index'
 import { usePathname } from 'next/navigation'
+import Footer from './Footer'
+
 const MobileNav = ({user}: MobileNavProps) => {
 
     const pathname = usePathname();
@@ -30,6 +30,9 @@ const MobileNav = ({user}: MobileNavProps) => {
                 />
             </SheetTrigger>
             <SheetContent side="left">
+                <SheetTitle className='hidden'>
+                    Mobile Nav
+                </SheetTitle>
                 <Link href="/"
                 className="mb-12 cursor-pointer flex items-center gap-1 px-4"
                 >
@@ -73,7 +76,7 @@ const MobileNav = ({user}: MobileNavProps) => {
                         USER
                         </nav>
                     </SheetClose>
-                    FOOTER
+                    <Footer user={user} type="mobile"/>
                 </div>
             </SheetContent>
         </Sheet>
