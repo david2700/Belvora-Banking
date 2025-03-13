@@ -43,8 +43,6 @@ export const signUp = async ({password, ...userData}: SignUpParams) => {
             `${firstName} ${lastName}`
         );
 
-        console.log('newUserAccount', newUserAccount)
-
         if (!newUserAccount) {
             throw new Error('Error creating user');
         }
@@ -126,7 +124,7 @@ export const createLinkToken = async (user: User) => {
             client_name: `${user.firstName} ${user.lastName}`,
             products: ['auth'] as Products[], 
             language: 'en',
-            country_codes: ['GB'] as CountryCode[]
+            country_codes: ['US'] as CountryCode[]
         }
 
         const response = await plaidClient.linkTokenCreate(tokenParams);
