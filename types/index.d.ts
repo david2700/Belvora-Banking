@@ -8,14 +8,14 @@ declare type SearchParamProps = {
 // ========================================
 
 declare type SignUpParams = {
-  firstName?: string;
-  lastName?: string;
-  address1?: string;
-  city?: string;
-  country?: string;
-  postCode?: string;
-  dateOfBirth?: string;
-  phoneNumber?: string;
+  firstName: string;
+  lastName: string;
+  address1: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  dateOfBirth: string;
+  ssn: string;
   email: string;
   password: string;
 };
@@ -36,10 +36,10 @@ declare type User = {
   name: string;
   address1: string;
   city: string;
-  country: string;
-  postCode: string;
+  state: string;
+  postalCode: string;
   dateOfBirth: string;
-  phoneNumber: string;
+  ssn: string;
 };
 
 declare type NewUserParams = {
@@ -194,7 +194,7 @@ declare interface AuthFormProps {
 
 declare interface BankDropdownProps {
   accounts: Account[];
-  setValue?: UseFormSetValue<any>;
+  setValue?: UseFormSetValue<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
   otherStyles?: string;
 }
 

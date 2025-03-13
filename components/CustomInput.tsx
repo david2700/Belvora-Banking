@@ -5,7 +5,7 @@ import { z } from "zod";
 import { Control, FieldPath } from "react-hook-form";
 import { AuthFormSchema } from "@/lib/utils";
 
-const formSchema = AuthFormSchema('sign-up');
+const formSchema = AuthFormSchema('sign-up'); // eslint-disable-line
 
 interface CustomInputProps {
     control: Control<z.infer<typeof formSchema>>

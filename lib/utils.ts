@@ -71,7 +71,7 @@ export const formatDateTime = (dateString: Date) => {
   };
 };
 
-export const parseStringify = (value: any) => JSON.parse(JSON.stringify(value));
+export const parseStringify = (value: any) => JSON.parse(JSON.stringify(value)); // eslint-disable-line @typescript-eslint/no-explicit-any
 
 export const removeSpecialCharacters = (value: string) => {
   return value.replace(/[^\w\s]/gi, "");
@@ -197,10 +197,10 @@ export const AuthFormSchema = (type: string) => z.object({
   lastName: type === "sign-in" ? z.string().optional() : z.string().min(3),
   address1: type === "sign-in" ? z.string().optional() : z.string().max(50),
   city: type === "sign-in" ? z.string().optional() : z.string().min(3),
-  postCode: type === "sign-in" ? z.string().optional() : z.string().min(5),
+  postalCode: type === "sign-in" ? z.string().optional() : z.string().min(5),
   dateOfBirth: type === "sign-in" ? z.string().optional() : z.string().min(3),
-  phoneNumber: type === "sign-in" ? z.string().optional() : z.string().min(3),
-  country: type === "sign-in" ? z.string().optional() : z.string().min(3),
+  ssn: type === "sign-in" ? z.string().optional() : z.string().min(3),
+  state: type === "sign-in" ? z.string().optional() : z.string().min(2).max(2),
   // Sign In and Sign Up
   email: z.string().email(),
   password: z.string().min(8),
