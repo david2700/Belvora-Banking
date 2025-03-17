@@ -188,6 +188,17 @@ declare interface PlaidLinkProps {
 //   image: string;
 // };
 
+interface FormInputProps {
+  name: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  control: Control<any>;
+  label: string;
+  description?: string;
+  children: React.ReactNode;
+  className?: string;
+  variant?: 'default' | 'withDescription';
+}
+
 declare interface AuthFormProps {
   type: "sign-in" | "sign-up";
 }
