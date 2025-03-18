@@ -2,7 +2,6 @@ import React from 'react'
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
     TableHead,
     TableHeader,
@@ -33,8 +32,7 @@ const CategoryBadge = ({category}: CategoryBadgeProps) => {
 const TransactionsTable = ({transactions}: TransactionTableProps) => {
   return (
         <Table>
-            <TableCaption>A list of your recent invoices.</TableCaption>
-            <TableHeader className='bg=[#f9fafb]'>
+            <TableHeader className='bg-[#f9fafb]'>
                 <TableRow>
                     <TableHead className="px-2">Transaction</TableHead>
                     <TableHead className="px-2">Amount</TableHead>
@@ -57,8 +55,8 @@ const TransactionsTable = ({transactions}: TransactionTableProps) => {
                         amount[0] === "-" ? 'bg-[#fffbfa]'
                         : 'bg-[#f6fef9] !over:bg-none !border-b-default'}`}>
                             <TableCell className="max-w-[250px] pl-2 pr-10">
-                                <div className="flex items-center gap-2">
-                                    <h1 className="text-14 truncate font-semibold">
+                                <div className="flex items-center gap-3">
+                                    <h1 className="text-14 truncate font-semibold text-[#344054]">
                                         {removeSpecialCharacters(t.name)}
                                     </h1>
                                 </div>
@@ -66,22 +64,22 @@ const TransactionsTable = ({transactions}: TransactionTableProps) => {
 
                             <TableCell className={`pl-2 pr-10 font-semibold
                                 ${isDebit || amount[0] === "-" ? 'text-[#f04438]' : 'text-[#039855]'}`}>
-                                {isDebit ? `- ${amount}` : isCredit ? `+ ${amount}` : amount}
+                                {isDebit ? `-${amount}` : isCredit ? amount : amount}
                             </TableCell>
 
                             <TableCell className="pl-2 pr-10">
                                 <CategoryBadge category={status} />
                             </TableCell>
 
-                            <TableCell className="min-w-32 pl-2 pr-10">
+                            <TableCell className="min-w-48 pl-2 pr-10">
                                 {formatDateTime(new Date(t.date)).dateTime}
                             </TableCell>
 
-                            <TableCell className="min-w-24pl-2 pr-10">
+                            <TableCell className="min-w-24 pl-2 pr-10 capitalize">
                                 {t.paymentChannel}
                             </TableCell>
 
-                            <TableCell className="pl-2 pr-10">
+                            <TableCell className="pl-2 pr-10 max-md:hidden">
                                 <CategoryBadge category={t.category} />
                             </TableCell>
                         </TableRow>

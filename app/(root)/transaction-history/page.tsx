@@ -49,7 +49,7 @@ const TransactionHistory = async ({searchParams}: SearchParamProps) => {
               {account?.data.officialName}
             </p>
             <p className="text-14 font-semibold tracking-[1.1px] text-white">
-              ●●●● ●●●● ●●●●{account?.data.mask}
+              ●●●● ●●●● ●●●● {account?.data.mask}
             </p>
           </div>
           
@@ -59,13 +59,12 @@ const TransactionHistory = async ({searchParams}: SearchParamProps) => {
               {formatAmount(account?.data.currentBalance)}
             </p>
           </div>
+        </div>
 
-          <section className="flex flex-col w-full gap-6">
+         <section className="flex flex-col w-full gap-6">
             <TransactionsTable 
               transactions={currentTransactions}
             />
-
-
             {totalPages > 1 && (
               <div className="my-4 w-full">
                 <Pagination
@@ -75,7 +74,6 @@ const TransactionHistory = async ({searchParams}: SearchParamProps) => {
               </div>
             )}
           </section>
-        </div>
       </div>
     </div>
   )

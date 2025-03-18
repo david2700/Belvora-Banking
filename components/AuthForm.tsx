@@ -21,6 +21,7 @@ const  AuthForm = ({type}: {type: string}) => {
     const router = useRouter();
     const [user, setUser] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
+    const [error, setError] = useState<string | null>(null);
 
     const formSchema = AuthFormSchema(type);
 
@@ -35,6 +36,7 @@ const  AuthForm = ({type}: {type: string}) => {
       // 2. Define a submit handler.
       const  onSubmit = async (data: z.infer<typeof formSchema>) => {
         setIsLoading(true)
+        setError(null);
         try {
             //sign up with Appwrite and create plaid token
 
@@ -54,8 +56,11 @@ const  AuthForm = ({type}: {type: string}) => {
             }
 
              const newUser = await signUp(userData);
+             if (!newUser) {
+                throw new Error("failed to sign up, please make sure your details are correct and try again");
+             }
 
-                setUser(newUser);
+            setUser(newUser);
             } 
             if (type === "sign-in") {
                 const response = await signIn({
@@ -65,12 +70,15 @@ const  AuthForm = ({type}: {type: string}) => {
 
                 if(response) {
                     router.push("/");
+                } else {
+                    throw new Error("Invalid email or password, Check your details and try again");
                 }
             }
         } catch (error) {
             console.log(error)
+            setError(error instanceof Error ? error.message : "An unexpected error occurred");
+            setIsLoading(false);
         }
-        setIsLoading(false);
       }
 
   return (
@@ -135,6 +143,9 @@ const  AuthForm = ({type}: {type: string}) => {
                         }
                         <CustomInput control={form.control} name="email" placeholder="Enter your email" label="Email"/>
                         <CustomInput control={form.control} name="password" placeholder="Enter your password" label="Password"/>
+                        {error && (
+                            <p className="text-red-500 text-sm">{error}</p>
+                        )}
                         <div className="flex flex-col gap-4">
                             <Button type="submit" className="form-btn" disabled={isLoading}>
                                 {isLoading ? (

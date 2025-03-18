@@ -193,16 +193,16 @@ export const getTransactionStatus = (date: Date) => {
 
 export const AuthFormSchema = (type: string) => z.object({
   // Sign Up
-  firstName: type === "sign-in" ? z.string().optional() : z.string().min(3),
-  lastName: type === "sign-in" ? z.string().optional() : z.string().min(3),
-  address1: type === "sign-in" ? z.string().optional() : z.string().max(50),
-  city: type === "sign-in" ? z.string().optional() : z.string().min(3),
-  postalCode: type === "sign-in" ? z.string().optional() : z.string().min(5),
-  dateOfBirth: type === "sign-in" ? z.string().optional() : z.string().min(3),
-  ssn: type === "sign-in" ? z.string().optional() : z.string().min(3),
-  state: type === "sign-in" ? z.string().optional() : z.string().min(2).max(2),
+  firstName: type === "sign-in" ? z.string().optional() : z.string().trim().min(3),
+  lastName: type === "sign-in" ? z.string().optional() : z.string().trim().min(3),
+  address1: type === "sign-in" ? z.string().optional() : z.string().trim().max(50),
+  city: type === "sign-in" ? z.string().optional() : z.string().trim().min(3),
+  postalCode: type === "sign-in" ? z.string().optional() : z.string().trim().min(5),
+  dateOfBirth: type === "sign-in" ? z.string().optional() : z.string().trim().min(3),
+  ssn: type === "sign-in" ? z.string().optional() : z.string().trim().min(9, "Invalid SSN").max(11, "Invalid SSN"),
+  state: type === "sign-in" ? z.string().optional() : z.string().trim().min(2).max(2),
   // Sign In and Sign Up
-  email: z.string().email(),
-  password: z.string().min(8),
+  email: z.string().trim().email(),
+  password: z.string().trim().min(8),
 })
 

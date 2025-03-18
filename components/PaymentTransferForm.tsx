@@ -22,7 +22,7 @@ import FormInput from "./FormInput";
 const formSchema = z.object({
   email: z.string().email("Invalid email address"),
   name: z.string().min(4, "Transfer note is too short"),
-  amount: z.string().min(4, "Amount is too short"),
+  amount: z.string().min(4, "Amount is too short, please enter amount in decimals e.g 5.00"),
   senderBank: z.string().min(4, "Please select a valid bank account"),
   sharableId: z.string().min(8, "Please select a valid sharable Id"),
 });
@@ -30,6 +30,7 @@ const formSchema = z.object({
 const PaymentTransferForm = ({ accounts }: PaymentTransferFormProps) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -44,43 +45,87 @@ const PaymentTransferForm = ({ accounts }: PaymentTransferFormProps) => {
 
   const submit = async (data: z.infer<typeof formSchema>) => {
     setIsLoading(true);
+    setSubmitError(null); // Reset any previous errors
 
     try {
       const receiverAccountId = decryptId(data.sharableId);
+      if (!receiverAccountId) {
+        throw new Error("Invalid sharable ID format");
+      }
+
       const receiverBank = await getBankByAccountId({
         accountId: receiverAccountId,
       });
+      if (!receiverBank) {
+        throw new Error("Receiver's bank account not found");
+      }
+
       const senderBank = await getBank({ documentId: data.senderBank });
+      if (!senderBank) {
+        throw new Error("Sender's bank account not found");
+      }
 
       const transferParams = {
         sourceFundingSourceUrl: senderBank.fundingSourceUrl,
         destinationFundingSourceUrl: receiverBank.fundingSourceUrl,
         amount: data.amount,
       };
+
       // create transfer
       const transfer = await createTransfer(transferParams);
+      if (!transfer) {
+        throw new Error("Failed to create transfer");
+      }
 
       // create transfer transaction
-      if (transfer) {
-        const transaction = {
-          name: data.name,
-          amount: data.amount,
-          senderId: senderBank.userId.$id,
-          senderBankId: senderBank.$id,
-          receiverId: receiverBank.userId.$id,
-          receiverBankId: receiverBank.$id,
-          email: data.email,
-        };
+      const transaction = {
+        name: data.name,
+        amount: data.amount,
+        senderId: senderBank.userId.$id,
+        senderBankId: senderBank.$id,
+        receiverId: receiverBank.userId.$id,
+        receiverBankId: receiverBank.$id,
+        email: data.email,
+      };
 
-        const newTransaction = await createTransaction(transaction);
-
-        if (newTransaction) {
-          form.reset();
-          router.push("/");
-        }
+      const newTransaction = await createTransaction(transaction);
+      if (!newTransaction) {
+        throw new Error("Failed to create transaction record");
       }
+
+      form.reset();
+      router.push("/");
+      
     } catch (error) {
       console.error("Submitting create transfer request failed: ", error);
+      
+      // Handle specific error cases
+      if (error instanceof Error) {
+        switch (error.message) {
+          case "Invalid sharable ID format":
+            form.setError("sharableId", {
+              type: "manual",
+              message: "The sharable ID format is invalid. Please check and try again."
+            });
+            break;
+          case "Receiver's bank account not found":
+            form.setError("sharableId", {
+              type: "manual",
+              message: "Could not find the receiver's bank account. Please verify the sharable ID."
+            });
+            break;
+          case "Sender's bank account not found":
+            form.setError("senderBank", {
+              type: "manual",
+              message: "Could not find your bank account. Please select a valid account."
+            });
+            break;
+          default:
+            setSubmitError("An error occurred while processing your transfer. Please try again.");
+        }
+      } else {
+        setSubmitError("An unexpected error occurred. Please try again later.");
+      }
     }
 
     setIsLoading(false);
@@ -89,6 +134,13 @@ const PaymentTransferForm = ({ accounts }: PaymentTransferFormProps) => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(submit)} className="flex flex-col">
+      {submitError && (
+          <div className="mb-4 rounded-md bg-red-50 p-4">
+              <div className="ml-3">
+                <p className="text-sm font-medium text-red-800">{submitError}</p>
+              </div>
+          </div>
+        )}
         <FormInput
           control={form.control}
           name="senderBank"
@@ -106,7 +158,7 @@ const PaymentTransferForm = ({ accounts }: PaymentTransferFormProps) => {
         <FormInput
           control={form.control}
           name="name"
-          label="Transfer Note (Optional)"
+          label="Transfer Note"
           description="Please provide any additional information or instructions related to the transfer"
           variant="withDescription"
         >
