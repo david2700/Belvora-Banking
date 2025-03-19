@@ -74,7 +74,6 @@ const  AuthForm = ({type}: {type: string}) => {
                     userId: loggedInUser.$id
                 })
 
-                console.log(accounts)
                 
                 if (accounts.data.length === 0) {
                 setUser(loggedInUser);
