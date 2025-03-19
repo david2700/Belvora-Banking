@@ -16,8 +16,10 @@ import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { signUp, signIn } from '@/lib/actions/user.actions';
 import PlaidLink from './PlaidLink';
+import { getAccounts } from '@/lib/actions/bank.actions';
 
 const  AuthForm = ({type}: {type: string}) => {
+   
     const router = useRouter();
     const [user, setUser] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
@@ -63,12 +65,23 @@ const  AuthForm = ({type}: {type: string}) => {
             setUser(newUser);
             } 
             if (type === "sign-in") {
-                const response = await signIn({
+                const loggedInUser = await signIn({
                     email: data.email,
                     password: data.password
                 })
 
-                if(response) {
+                const accounts = await getAccounts({
+                    userId: loggedInUser.$id
+                })
+
+                console.log(accounts)
+                
+                if (accounts.data.length === 0) {
+                setUser(loggedInUser);
+                };
+
+
+                if(accounts.data.length > 0) {
                     router.push("/");
                 } else {
                     throw new Error("Invalid email or password, Check your details and try again");
@@ -129,10 +142,10 @@ const  AuthForm = ({type}: {type: string}) => {
                                         <CustomInput control={form.control} name="lastName" placeholder="Doe" label="Last Name"/>
                                     </div>
                                     <CustomInput control={form.control} name="address1" placeholder="Enter your specific address" label="Address"/>
-                                    <CustomInput control={form.control} name="city" placeholder="e.g: London" label="City"/>
+                                    <CustomInput control={form.control} name="city" placeholder="e.g: New York City" label="City"/>
                                     <div className="flex justify-around gap-4">
                                         <CustomInput control={form.control} name="state" placeholder="e.g: NY" label="State"/>
-                                        <CustomInput control={form.control} name="postalCode" placeholder="e.g: 111011" label="Postal Code"/>
+                                        <CustomInput control={form.control} name="postalCode" placeholder="e.g: 11101" label="5-digit Postal Code"/>
                                     </div>
                                     <div className="flex justify-around gap-4">
                                         <CustomInput control={form.control} name="dateOfBirth" placeholder="YYYY-MM-DD" label="Date of Birth"/>

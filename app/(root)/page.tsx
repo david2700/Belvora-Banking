@@ -5,6 +5,7 @@ import RightSidebar from '@/components/RightSidebar'
 import { getLoggedInUser } from '@/lib/actions/user.actions'
 import { getAccount, getAccounts } from '@/lib/actions/bank.actions'
 import RecentTransactions from '@/components/RecentTransactions'
+import { redirect } from 'next/navigation'
 
 const Home = async ({searchParams}: SearchParamProps) => {
   const params = await searchParams;
@@ -17,7 +18,7 @@ const Home = async ({searchParams}: SearchParamProps) => {
     userId: loggedIn.$id
   })
 
-  if (!accounts) return;
+  if (accounts.data.length === 0) redirect("/sign-in");
 
   const accountsData = accounts?.data;
 

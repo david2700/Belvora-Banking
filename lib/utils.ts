@@ -197,10 +197,10 @@ export const AuthFormSchema = (type: string) => z.object({
   lastName: type === "sign-in" ? z.string().optional() : z.string().trim().min(3),
   address1: type === "sign-in" ? z.string().optional() : z.string().trim().max(50),
   city: type === "sign-in" ? z.string().optional() : z.string().trim().min(3),
-  postalCode: type === "sign-in" ? z.string().optional() : z.string().trim().min(5),
+  postalCode: type === "sign-in" ? z.string().optional() : z.string().trim().min(5).max(5, "Please enter first 5 digits of your postal code"),
   dateOfBirth: type === "sign-in" ? z.string().optional() : z.string().trim().min(3),
   ssn: type === "sign-in" ? z.string().optional() : z.string().trim().min(4, "Please enter the last 4 digits of your SSN").max(4, "Please enter the last 4 digits of your SSN"),
-  state: type === "sign-in" ? z.string().optional() : z.string().trim().min(2).max(2),
+  state: type === "sign-in" ? z.string().optional() : z.string().trim().min(2).max(2, "Please enter the 2 letter state code"),
   // Sign In and Sign Up
   email: z.string().trim().email(),
   password: z.string().trim().min(8),
