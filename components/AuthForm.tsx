@@ -136,7 +136,7 @@ const  AuthForm = ({type}: {type: string}) => {
                                     </div>
                                     <div className="flex justify-around gap-4">
                                         <CustomInput control={form.control} name="dateOfBirth" placeholder="YYYY-MM-DD" label="Date of Birth"/>
-                                        <CustomInput control={form.control} name="ssn" placeholder="e.g: 123456789" label="SSN"/>
+                                        <CustomInput control={form.control} name="ssn" placeholder="e.g: 1234" label="Last 4 digits of SSN"/>
                                     </div>
                                 </>
                             )

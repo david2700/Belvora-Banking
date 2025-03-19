@@ -199,7 +199,7 @@ export const AuthFormSchema = (type: string) => z.object({
   city: type === "sign-in" ? z.string().optional() : z.string().trim().min(3),
   postalCode: type === "sign-in" ? z.string().optional() : z.string().trim().min(5),
   dateOfBirth: type === "sign-in" ? z.string().optional() : z.string().trim().min(3),
-  ssn: type === "sign-in" ? z.string().optional() : z.string().trim().min(9, "Invalid SSN").max(11, "Invalid SSN"),
+  ssn: type === "sign-in" ? z.string().optional() : z.string().trim().min(4, "Please enter the last 4 digits of your SSN").max(4, "Please enter the last 4 digits of your SSN"),
   state: type === "sign-in" ? z.string().optional() : z.string().trim().min(2).max(2),
   // Sign In and Sign Up
   email: z.string().trim().email(),
