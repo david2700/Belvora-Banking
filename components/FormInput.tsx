@@ -9,9 +9,11 @@ const FormInput = ({
   label, 
   description, 
   children,
-  variant = 'default'
+  variant = 'default',
+  formId
 }: FormInputProps) => {
   return (
+    <div id={formId}>
     <FormField
       control={control}
       name={name}
@@ -46,6 +48,7 @@ const FormInput = ({
         </FormItem>
       )}
     />
+    </div>
   )
 }
 

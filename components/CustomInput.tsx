@@ -12,10 +12,11 @@ interface CustomInputProps {
     name: FieldPath<z.infer<typeof formSchema>>
     placeholder: string
     label: string
+    formId: string
 }
-const CustomInput = ({control, name, placeholder, label}: CustomInputProps) => {
+const CustomInput = ({control, name, placeholder, label, formId}: CustomInputProps) => {
   return (
-    <div><FormField
+    <div id={formId}><FormField
     control={control}
     name={name}
     render={({ field }) => (
@@ -30,6 +31,7 @@ const CustomInput = ({control, name, placeholder, label}: CustomInputProps) => {
                         className="input-class"
                         {...field}
                         type={name === "password" ? "password" : "text"}
+                        id={formId}
                     />
                 </FormControl>
                 <FormMessage className="form-message"/>

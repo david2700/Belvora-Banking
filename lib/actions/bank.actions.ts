@@ -60,6 +60,7 @@ export const getAccounts = async ({ userId }: getAccountsProps) => {
     return parseStringify({ data: accounts, totalBanks, totalCurrentBalance });
   } catch (error) {
     console.error("An error occurred while getting the accounts:", error);
+    
   }
 };
 

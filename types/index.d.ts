@@ -197,6 +197,7 @@ interface FormInputProps {
   children: React.ReactNode;
   className?: string;
   variant?: 'default' | 'withDescription';
+  formId?: string;
 }
 
 declare interface AuthFormProps {

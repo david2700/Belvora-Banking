@@ -147,6 +147,7 @@ const PaymentTransferForm = ({ accounts }: PaymentTransferFormProps) => {
           label="Select Source Bank"
           description="Select the bank account you want to transfer funds from"
           variant="withDescription"
+          formId="payment-transfer-form-senderBank"
         >
           <BankDropdown
             accounts={accounts}
@@ -161,10 +162,12 @@ const PaymentTransferForm = ({ accounts }: PaymentTransferFormProps) => {
           label="Transfer Note"
           description="Please provide any additional information or instructions related to the transfer"
           variant="withDescription"
+          formId="payment-transfer-form-name"
         >
           <Textarea
             placeholder="Write a short note here"
             className="input-class"
+            id="payment-transfer-form-name"
           />
         </FormInput>
 
@@ -181,10 +184,12 @@ const PaymentTransferForm = ({ accounts }: PaymentTransferFormProps) => {
           control={form.control}
           name="email"
           label="Recipient's Email Address"
+          formId="payment-transfer-form-email"
         >
           <Input
             placeholder="ex: johndoe@gmail.com"
             className="input-class"
+            id="payment-transfer-form-email"
           />
         </FormInput>
 
@@ -192,10 +197,12 @@ const PaymentTransferForm = ({ accounts }: PaymentTransferFormProps) => {
           control={form.control}
           name="sharableId"
           label="Receiver's Plaid Sharable Id"
+          formId="payment-transfer-form-sharableId"
         >
           <Input
             placeholder="Enter the public account number"
             className="input-class"
+            id="payment-transfer-form-sharableId"
           />
         </FormInput>
 
@@ -203,10 +210,12 @@ const PaymentTransferForm = ({ accounts }: PaymentTransferFormProps) => {
           control={form.control}
           name="amount"
           label="Amount"
+          formId="payment-transfer-form-amount"
         >
           <Input
             placeholder="ex: 5.00"
             className="input-class"
+            id="payment-transfer-form-amount"
           />
         </FormInput>
 

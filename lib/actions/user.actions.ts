@@ -82,10 +82,10 @@ export const signUp = async ({password, ...userData}: SignUpParams) => {
         })
 
         if (!dwollaCustomerUrl) {
-            throw new Error('Error creating Dwolla customer');
+            // throw new Error('Error creating Dwolla customer');
         }
 
-        const dwollaCustomerId = extractCustomerIdFromUrl(dwollaCustomerUrl);
+        const dwollaCustomerId = dwollaCustomerUrl && extractCustomerIdFromUrl(dwollaCustomerUrl);
 
         const newUser = await database.createDocument(
             DATABASE_ID!,
@@ -112,7 +112,7 @@ export const signUp = async ({password, ...userData}: SignUpParams) => {
 
         return parseStringify(newUser);
     } catch (error) {
-        console.log('Error', error)
+        throw error;
     }
 }
 
