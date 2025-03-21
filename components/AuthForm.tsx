@@ -59,7 +59,7 @@ const  AuthForm = ({type}: {type: string}) => {
 
              const newUser = await signUp(userData);
              if (!newUser) {
-                throw new Error("failed to sign up, please make sure your details are correct and try again");
+                throw new Error("Sign up failed, please check your details and try again");
              }
 
             setUser(newUser);
@@ -74,16 +74,18 @@ const  AuthForm = ({type}: {type: string}) => {
                     userId: loggedInUser?.$id
                 })
 
+                const accountsLength = accounts?.data?.length;
+
                 
-                if (accounts?.data?.length === 0) {
+                if (accountsLength === 0) {
                  setUser(loggedInUser);
                 };
 
 
-                if(accounts?.data?.length > 0) {
+                if(accountsLength > 0) {
                     router.push("/");
                 } else {
-                    throw new Error("Invalid email or password, Check your details and try again");
+                    throw new Error("Email or password is incorrect. Please check your details and try again");
                 }
             }
         } catch (error) {
